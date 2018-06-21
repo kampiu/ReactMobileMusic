@@ -1,7 +1,6 @@
-//const _baseUrl = 'https://music.billson.club/api'
-const _baseUrl = 'http://localhost:3002/api'
+const _baseUrl = 'https://music.billson.club/api'
+// const _baseUrl = 'http://localhost:3002/api'
 //const _baseUrlPHP = 'http://localhost:8088'
-//const _baseUrl = 'http://192.168.0.159:3002/api'
 
 
 export default {
