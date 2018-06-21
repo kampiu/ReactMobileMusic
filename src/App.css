@@ -1,0 +1,21 @@
+.App{
+	width:100%;
+	min-height:100%;
+	float:left;
+	background:#FBFCFD;
+	padding-bottom:50px;
+	z-index: 2000;
+	/*position:absolute;					/*图片裁剪暂时使用*/*/
+	overflow: hidden;				/*图片裁剪暂时屏蔽*/
+}
+.App-tabbar{
+	width:100%;
+	height:50px;
+	position:fixed;
+	left:0;
+	bottom:0;
+	z-index: 3000;
+}
+.app-box-view{
+	min-height: 100%;
+}

@@ -1,0 +1,126 @@
+.ranking-view{
+	width:100%;
+	height:auto;
+	overflow: hidden;
+	padding-top:0.88rem;
+}
+.ranking-title{
+	width:100%;
+	height:0.5rem;
+	margin-top:0.3rem;
+	line-height: 0.5rem;
+	padding:0 0.2rem;
+	font-size: 0.24rem;
+	font-weight: bold;
+}
+.ranking-item{
+	width:100%;
+	height:1.9rem;
+	padding:0 0.1rem;
+	display:flex;
+}
+.ranking-img{
+	width:1.8rem;
+	height:1.8rem;
+	margin:0.05rem 0;
+	flex:0 0 auto;
+	margin-right:0.4rem;
+}
+.ranking-list{
+	flex:1 1 auto;
+	display:flex;
+	border-bottom:1px solid #F0F1F2;
+	flex-direction: column;
+	justify-content: flex-start;
+	padding:0.1rem 0;
+}
+.ranking-list > div{
+	flex:1 1 auto;
+	display:flex;
+}
+.ranking-list-item > div{
+	display:inline-block;
+	display:flex;
+	align-items: center;
+}
+.ranking-item-name{
+	overflow: hidden;
+	max-width: 4rem;
+	width:auto;
+	height:0.6rem;
+	overflow: hidden;
+	line-height: 0.6rem;
+	white-space: nowrap;
+	text-overflow: ellipsis;
+	overflow: hidden;
+}
+.ranking-item-singer{
+	flex:1 1 auto;
+	height:0.6rem;
+	overflow: hidden;
+	line-height: 0.6rem;
+	white-space: nowrap;
+	text-overflow: ellipsis;
+	overflow: hidden;
+	color:#999;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

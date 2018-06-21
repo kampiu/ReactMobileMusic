@@ -1,0 +1,109 @@
+.img-upload-view{
+	width:100%;
+	height:100%;
+	display:flex;
+	overflow: hidden;
+	justify-content: center;
+	flex-wrap: wrap;
+	padding:1rem 0.2rem;
+	position:fixed;
+}
+.img-upload-box{
+	width:7.5rem;
+	height:7.5rem;
+	line-height: 4.6rem;
+	text-align: center;
+	font-size: 0.6rem;
+	color:#ACACAC;
+	position:fixed;
+	top:0.9rem;
+	left:0;
+	background-size: cover;
+	background-repeat: no-repeat;
+}
+.img-cutting-view{
+	width:100%;
+	position:absolute;
+	height:100vh;
+	background:#000;
+	z-index: 9000;
+	left:0;
+	top:0;
+	display:flex;
+	justify-content: center;
+	align-items: center;
+}
+.cutting-mask{
+	width:100%;
+	height:100%;
+	position:absolute;
+	left:0;
+	top:0;
+	background:rgba(0,0,0,0.7);
+	z-index: 200;
+}
+.cutting-img{
+	width:100%;
+	background-color:rgba(0,0,0,0.7);
+	position:absolute;
+	z-index: 100;
+}
+#canvas{
+	width:300px;
+	height:300px;
+	position:absolute;
+	left:50%;
+	top:50%;
+	border:1px solid #FFF;
+	margin-left:-150px;
+	margin-top:-150px;
+	z-index: 500;
+}
+.img-upload-bar{
+	width:100%;
+	height:0.88rem;
+	position:absolute;
+	left:0;
+	top:0;
+	background:#5179F1;
+	color:#FFF;
+	display:flex;
+	justify-content: space-between;
+	padding:0 0.16rem 0 0.3rem;
+	z-index: 2000;
+	align-items: center;
+}
+.img-upload-bar span:nth-child(2){
+	line-height: 0.46rem;
+	width:0.8rem;
+	border:1px solid #FFF;
+	text-align: center;
+	border-radius: 7px;
+	height:0.46rem;
+	display:inline-block;
+	box-sizing: content-box;
+}
+.upload-img-btn{
+	width:5.2rem;
+	height:0.88rem;
+	line-height: 0.88rem;
+	color:#FFF;
+	margin-top:8rem;
+	text-align: center;
+	font-size: 0.2rem;
+	background:#5179F1;
+	position:relative;
+}
+.upload-img-btn > input{
+	opacity: 0;
+	width:100%;
+	position:absolute;
+	left:0;
+	top:0;
+	height:100%;
+}
+
+
+
+
+
