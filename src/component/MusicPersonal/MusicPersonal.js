@@ -5,11 +5,15 @@ import React, {
 import TitleBar from './../titleBar/titleBar'
 import LoginView from './loginView/loginView'
 import './MusicPersonal.css'
+import { Toast } from 'antd-mobile'
 import API from '../../comment/Api'
 import Cookies from 'js-cookie'
 import { connect } from 'react-redux'
 import { u_login, u_logout } from './../../redux/reducers/MusicUser'
 import { p_initList } from './../../redux/reducers/MusicPlayer'
+import crypto from 'crypto'
+import cryptojs from 'crypto-js'
+import aes from 'aes'
 
 @connect(
 	state => ({
@@ -31,6 +35,7 @@ class MusicPersonal extends PureComponent {
 		this.logout = this.logout.bind(this)
 		this.setting = this.setting.bind(this)
 		this.toHistory = this.toHistory.bind(this)
+		this.test = this.test.bind(this)
 	}
 	componentWillMount() {
 		if(Cookies.get().accessToken) {
@@ -70,10 +75,38 @@ class MusicPersonal extends PureComponent {
 		
 	}
 	setting(){
-		window.location.hash = "/setting"
+		if(this.props.data.user.login){
+			window.location.hash = "/setting"
+		}else{
+			Toast.info("请先登录!")
+		}
 	}
 	toHistory(){
 		window.location.hash = '/history'
+	}
+	test(){
+		http.get("http://localhost:8088/art").then((res)=>{
+			console.log(res)
+			let key = cryptojs.enc.Latin1.parse('5AA765D61D8327DE')
+			let iv = cryptojs.enc.Latin1.parse('1234567812345678')
+			
+			let encrypted = cryptojs.AES.encrypt("abcdefg",key,{iv:iv,mode:cryptojs.mode.CBC,padding:cryptojs.pad.ZeroPadding}); 	//AES加密传后台
+
+//			console.log(JSON.stringify(encrypted.toString(cryptojs.enc.Utf8)))
+//			let decrypted = cryptojs.AES.decrypt(res.data.result.data,key,{iv:iv,padding:cryptojs.pad.ZeroPadding});
+//			let len = decrypted.toString(cryptojs.enc.Utf8);
+//			console.log(len)
+//			console.log(JSON.parse(len))
+		}).catch((res)=>{
+			console.log("error",res)
+		})
+	}
+	decode(encrypted, key) {
+	    const decipher = crypto.createDecipher('aes128', key);
+	    let decrypted = decipher.update(encrypted, 'hex', 'utf8');
+	    decrypted += decipher.final('utf8');
+	    console.log(decrypted)
+//	    return decrypted;
 	}
 	render() {
 		return(
@@ -103,7 +136,7 @@ class MusicPersonal extends PureComponent {
 						<span></span>
 						好友搜索
 					</div>
-					<div className="personal-nav">
+					<div className="personal-nav" onClick={ this.test }>
 						<span></span>
 						最新通告
 					</div>

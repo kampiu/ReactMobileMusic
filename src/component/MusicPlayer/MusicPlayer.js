@@ -1,5 +1,5 @@
 import React, {
-	Component,
+	PureComponent,
 	http
 } from 'react'
 import './MusicPlayer.css' 
@@ -7,7 +7,7 @@ import API from '../../comment/Api'
 import { Toast } from 'antd-mobile'
 import PlayerList from './playerList/playerList'
 import { connect } from 'react-redux'
-import { changPlay, changeSongIndex, loadSong, addSong, removeSong, changCurrent, initSong, initDuration, prevPlay, nextPlay, p_initsonglist } from './../../redux/reducers/MusicPlayer'
+import { changPlay, changeSongIndex, loadSong, addSong, changemode, removeSong, changCurrent, initSong, initDuration, prevPlay, nextPlay, p_initsonglist } from './../../redux/reducers/MusicPlayer'
 import { c_initLoading } from './../../redux/reducers/MusicCollection'
 
 @connect(
@@ -25,17 +25,21 @@ import { c_initLoading } from './../../redux/reducers/MusicCollection'
 		prevPlay,
 		nextPlay,
 		p_initsonglist,
-		c_initLoading
+		c_initLoading,
+		changemode
 	}
 )
 
-class MusicPlayer extends Component {
+class MusicPlayer extends PureComponent {
 	constructor(props) {
 		super(props)
 		this.state = {
 			list: false,
 			offset: 0
 		}
+		this.changeMode = this.changeMode.bind(this)
+		this.onPlay = this.onPlay.bind(this)
+		this.toggleList = this.toggleList.bind(this)
 	}
 	componentWillMount() {
 		this.loading()
@@ -79,6 +83,9 @@ class MusicPlayer extends Component {
 			this.props.changPlay(!this.props.msg.player.playing)
 		}
 	}
+	changeMode(){
+		this.props.changemode()
+	}
 	toggleList() {
 		this.setState({
 			list: !this.state.list
@@ -96,13 +103,13 @@ class MusicPlayer extends Component {
 						</div>
 					</div>
 					<div className="player-lyric">
-						<div className="player-lyric-view" style={{top: -this.props.msg.player.lyricIndex * 0.48 + 4.8 + "rem"}}>
+						<div id="player-lyric-gettop" className="player-lyric-view" style={{top: -this.props.msg.player.lyricIndex * 0.4 + 4.2 + "rem"}}>
 							{
 								this.props.msg.player.lyric.length === 0 ? "暂无歌词" : null
 							}
 							{
 								this.props.msg.player.lyric.map((item,index) => {
-									return <p key={item.time + item.txt + index} style={ this.props.msg.player.lyricIndex === index ? {color:"#517AF1",fontSize:"0.26rem"} : {}}>{item.txt}</p>
+									return <p key={item.time + item.txt + index} style={ this.props.msg.player.lyricIndex === index ? {color:"#517AF1",fontSize:"16px"} : {}}>{item.txt}</p>
 								})
 							}
 						</div>
@@ -114,11 +121,11 @@ class MusicPlayer extends Component {
 							<span>{  this.timeForm(this.props.msg.player.durationTime)  }</span>
 						</div>
 						<div className="player-console">
-							<div className="player-mode"></div>
+							<div className={ 'player-mode mode' + this.props.msg.player.mode} onClick={ this.changeMode }></div>
 							<div className="player-perv" onClick={ () => { this.props.prevPlay() }}></div>
-							<div onClick={ () => { this.onPlay() }} className={ this.props.msg.player.playing ? "player-pause" : "player-play"}></div>
+							<div onClick={ this.onPlay } className={ this.props.msg.player.playing ? "player-pause" : "player-play"}></div>
 							<div className="player-next" onClick={ () => { this.props.nextPlay() }}></div>
-							<div className="player-lists" onClick={ () => { this.toggleList() }}></div>
+							<div className="player-lists" onClick={ this.toggleList }></div>
 						</div>
 					</div>
 				</div>

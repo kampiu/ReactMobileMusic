@@ -55,7 +55,7 @@ class boxGridItem extends PureComponent {
 			<div className="box-grid-item" style={{width:this.props.width}} onClick={this.toPage}>
 				<div className="box-grid-item-img" style={{height:this.props.width}}>
 					{
-						this.state.data.picUrl === undefined ? <img className="load-img" alt="" src={this.state.data.coverImgUrl} onLoad={(e)=>{this.imgLoad(e)}} /> : <img className="load-img" alt="" src={this.state.data.picUrl} onLoad={(e)=>{this.imgLoad(e)}} /> 
+						this.state.data.picUrl === undefined ? <img className="load-img" alt="" src={this.state.data.coverImgUrl + '?param=140y140'} onLoad={(e)=>{this.imgLoad(e)}} /> : <img className="load-img" alt="" src={this.state.data.picUrl + '?param=140y140'} onLoad={(e)=>{this.imgLoad(e)}} /> 
 					}
 					<img alt="" className="img-default" src="./img/default.jpg" />
 					{

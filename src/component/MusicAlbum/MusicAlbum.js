@@ -69,7 +69,6 @@ class boxGrid extends PureComponent {
 		})
 	}
 	onScroll() {
-		console.log(document.body.offsetHeight , window.screen.height , document.getScrollTop())
 		if(!this.props.album.albumList.loading && !this.state.refreshing && (document.body.offsetHeight - window.screen.height - document.getScrollTop() <= 600)) {
 			this.setState({
 				refreshing: true

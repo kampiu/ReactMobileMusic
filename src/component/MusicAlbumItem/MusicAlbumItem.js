@@ -26,7 +26,6 @@ class MusicAlbumItem extends PureComponent {
 		this.state = {
 			loading:true
 		}
-		console.log(this.props)
 	}
 	componentWillMount() {
 		document.documentElement.scrollTop = 0
@@ -49,7 +48,6 @@ class MusicAlbumItem extends PureComponent {
 		}
 	}
 	render() {
-		console.log("AlbumList --- render执行一次")
 		return(
 			<div className="album-view">
 				{

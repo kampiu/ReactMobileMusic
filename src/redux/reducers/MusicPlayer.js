@@ -19,6 +19,7 @@ const P_SETURL = "设置歌曲资源路径"
 const P_ERROR = "加载歌曲出错"
 const P_INITSONGLIST = "初始化歌单列表"
 const P_INITLOGOUT = "初始化收藏歌单"
+const P_CHANGEMODE = "更改歌曲播放模式"
 
 let playerStore = {
 	audio: {
@@ -37,7 +38,9 @@ let playerStore = {
 	currentTime: 0, //歌曲播放进度
 	durationTime: 0, //歌曲时长
 	change: false, //歌曲是否被改变
-	lyricIndex: 0 //歌词的下标
+	lyricIndex: 0, //歌词的下标
+	mode:0,			//播放模式 0 => 列表循环, 1 => 单曲循环, 2 => 随机播放
+	randList:[]		//随机播放的歌曲
 }
 
 export const player = (state = playerStore, action) => {
@@ -102,14 +105,17 @@ export const player = (state = playerStore, action) => {
 			state.durationTime = action.time
 			return Object.assign({}, state)
 		case P_PREVPLAY:
+			console.log(action)
 			state.currentIndex = action.index
-			state.audio = state.songList[action.index - 1]
+			state.audio = action.audio
 			state.audio.songUrl = action.url
+			state.lyricIndex = 0
 			return Object.assign({}, state)
 		case P_NEXTPLAY:
 			state.currentIndex = action.index
-			state.audio = state.songList[action.index - 1]
+			state.audio = action.audio
 			state.audio.songUrl = action.url
+			state.lyricIndex = 0
 			return Object.assign({}, state)
 		case P_DEFAULT:
 			return state
@@ -140,8 +146,20 @@ export const player = (state = playerStore, action) => {
 		case P_ERROR:
 			Toast.info('歌曲存在版权问题，无法播放!', 0.8, null, false);
 			return Object.assign({}, state)
+		case P_CHANGEMODE:
+			state.mode = (++state.mode === 3) ? 0 : state.mode++
+			if(state.mode === 2){
+				state.randList = state.songList.slice().sort(function(){ return 0.5 - Math.random() })
+			}
+			return Object.assign({}, state)
 		default:
 			return state
+	}
+}
+
+export function changemode(){
+	return{
+		type:P_CHANGEMODE
 	}
 }
 
@@ -246,8 +264,25 @@ export function initDuration(time) {
 }
 export function prevPlay() {
 	return dispatch => {
-		let len = ((this.msg.player.currentIndex === 1) ? this.msg.player.songList.length : this.msg.player.currentIndex - 1)
-		let audio = this.msg.player.songList[len - 1]
+		let len,audio
+		switch(this.msg.player.mode){
+			case 0:
+				len = ((this.msg.player.currentIndex === 1) ? this.msg.player.songList.length : this.msg.player.currentIndex - 1)
+				audio = this.msg.player.songList[len - 1]
+				break
+			case 1:
+				len = this.msg.player.currentIndex + 1
+				audio = this.msg.player.audio
+				break
+			case 2:
+				len = ((this.msg.player.currentIndex === 1) ? this.msg.player.songList.length : this.msg.player.currentIndex - 1)
+				audio = this.msg.player.randList[len - 1]
+				break
+			default:
+				len = ((this.msg.player.currentIndex === 1) ? this.msg.player.songList.length : this.msg.player.currentIndex - 1)
+				audio = this.msg.player.songList[len - 1]
+				break
+		}
 		return http.get(API.getMusicUrl(audio.id)).then((res) => {
 			if(res.data.data[0].url === null) {
 				dispatch({
@@ -258,6 +293,7 @@ export function prevPlay() {
 			dispatch({
 				type: P_PREVPLAY,
 				url: res.data.data[0].url,
+				audio:audio,
 				index: len
 			})
 			return _getLyric(audio, dispatch)
@@ -266,9 +302,27 @@ export function prevPlay() {
 }
 export function nextPlay() {
 	return dispatch => {
-		let len = ((this.msg.player.currentIndex === this.msg.player.songList.length) ? 1 : this.msg.player.currentIndex + 1)
-		let audio = this.msg.player.songList[len - 1]
+		let len,audio
+		switch(this.msg.player.mode){
+			case 0:
+				len = ((this.msg.player.currentIndex === this.msg.player.songList.length) ? 1 : this.msg.player.currentIndex + 1)
+				audio = this.msg.player.songList[len - 1]
+				break
+			case 1:
+				len = this.msg.player.currentIndex + 1
+				audio = this.msg.player.audio
+				break
+			case 2:
+				len = ((this.msg.player.currentIndex === this.msg.player.songList.length) ? 1 : this.msg.player.currentIndex + 1)
+				audio = this.msg.player.randList[len - 1]
+				break
+			default:
+				len = ((this.msg.player.currentIndex === this.msg.player.songList.length) ? 1 : this.msg.player.currentIndex + 1)
+				audio = this.msg.player.songList[len - 1]
+				break
+		}
 		return http.get(API.getMusicUrl(audio.id)).then((res) => {
+			console.log("res",res.data.data[0].url)
 			if(res.data.data[0].url === null) {
 				dispatch({
 					type: P_ERROR
@@ -278,6 +332,7 @@ export function nextPlay() {
 			dispatch({
 				type: P_NEXTPLAY,
 				url: res.data.data[0].url,
+				audio:audio,
 				index: len
 			})
 			return _getLyric(audio, dispatch)
@@ -350,4 +405,8 @@ const _getLyric = (song, dispatch) => {
 			lyric: lrcObj
 		})
 	})
+}
+
+const rand = (min,max) => {
+	return Math.floor(Math.random()*(max-min+1))+min;
 }
