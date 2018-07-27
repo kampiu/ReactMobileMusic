@@ -25,6 +25,11 @@ Using React to build music player, the server is https://api.billson.club, using
 	* Login to register, you can use the NetEase cloud account to log in
 	* Record the user's login status and get the list of users' favorites list.
 	
+* Data source network can be deleted if there is infringement.
+* QQ:  1479376017
+* Email:  1479376017@qq.com
+* WeChat: Mr_KINBIU
+* WebSide: [http://www.billson.club](http://www.billson.club)
 
 
 
