@@ -1,7 +1,7 @@
 # ReactMusic
 
 #### Description
-Using React to build music player, the server is https://music.billson.club, using Redux one-way data flow, using Antd-Mobile mobile framework.
+Using React to build music player, the server is https://api.billson.club, using Redux one-way data flow, using Antd-Mobile mobile framework.
 
 #### Used library
 1. react
