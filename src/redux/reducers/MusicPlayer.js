@@ -59,6 +59,7 @@ export const player = (state = playerStore, action) => {
 			return Object.assign({}, state)
 		case P_ADDSONG:
 			state.songList.push(action.song)
+			state.songList = Array.from(new Set(state.songList))
 			return Object.assign({}, state)
 		case P_INITSONGLIST:
 			state.songList = action.songlist
@@ -105,7 +106,6 @@ export const player = (state = playerStore, action) => {
 			state.durationTime = action.time
 			return Object.assign({}, state)
 		case P_PREVPLAY:
-			console.log(action)
 			state.currentIndex = action.index
 			state.audio = action.audio
 			state.audio.songUrl = action.url
@@ -226,7 +226,7 @@ export function removeSong(song) { //移除歌曲，判断移除的歌曲是当�
 						state: state
 					})
 					http.get(API.getMusicUrl(state.audio.id)).then((res) => {
-						if(res.data.data[0].url === null) {
+						if(res.data[0].url === null) {
 							dispatch({
 								type: P_ERROR
 							})
@@ -284,7 +284,7 @@ export function prevPlay() {
 				break
 		}
 		return http.get(API.getMusicUrl(audio.id)).then((res) => {
-			if(res.data.data[0].url === null) {
+			if(res.data[0].url === null) {
 				dispatch({
 					type: P_ERROR
 				})
@@ -292,7 +292,7 @@ export function prevPlay() {
 			}
 			dispatch({
 				type: P_PREVPLAY,
-				url: res.data.data[0].url,
+				url: res.data[0].url,
 				audio:audio,
 				index: len
 			})
@@ -321,9 +321,9 @@ export function nextPlay() {
 				audio = this.msg.player.songList[len - 1]
 				break
 		}
-		return http.get(API.getMusicUrl(audio.id)).then((res) => {
-			console.log("res",res.data.data[0].url)
-			if(res.data.data[0].url === null) {
+		return http.get(API.getMusicUrl(audio.id)).then(res => {
+			console.log(res)
+			if(res.data[0].url === null) {
 				dispatch({
 					type: P_ERROR
 				})
@@ -331,7 +331,7 @@ export function nextPlay() {
 			}
 			dispatch({
 				type: P_NEXTPLAY,
-				url: res.data.data[0].url,
+				url: res.data[0].url,
 				audio:audio,
 				index: len
 			})
@@ -345,7 +345,6 @@ export function initSong(song) { //初始化歌曲，顺便播放的时候获取
 		_getUrl(song, P_INITSONG, dispatch)
 		let data = localStorage.getItem("music_history") ? JSON.parse(localStorage.getItem("music_history")) : []
 		if(data.length >= 50){
-			console.log("进来了",data)
 			data.splice(data.length-1,1)
 		}
 		data.unshift(song)
@@ -360,28 +359,30 @@ export function initSong(song) { //初始化歌曲，顺便播放的时候获取
 	}
 }
 const _getUrl = (song, type, dispatch) => {
-	http.get(API.getMusicUrl(song.id)).then((res) => {
-		if(res.data.data[0].url === null) {
+	http.get(API.getMusicUrl(song.id)).then(res => {
+		if(res.code === 200){
+			if(res.data[0].url === null) {
+				dispatch({
+					type: P_ERROR
+				})
+				return
+			}
+			song.songUrl = res.data[0].url
 			dispatch({
-				type: P_ERROR
+				type: type,
+				song: song
 			})
-			return
+			return _getLyric(song, dispatch)
 		}
-		song.songUrl = res.data.data[0].url
-		dispatch({
-			type: type,
-			song: song
-		})
-		return _getLyric(song, dispatch)
 	})
 }
 
 const _getLyric = (song, dispatch) => {
-	http.get(API.getLyric(song.id)).then((res) => {
-		if(!res.data.lrc){
+	http.get(API.getLyric(song.id)).then(res => {
+		if(!res.lrc){
 			return
 		}
-		let lyrics = res.data.lrc.lyric.split('\n'),
+		let lyrics = res.lrc.lyric.split('\n'),
 			lrcObj = [],
 			timeReg = /\[\d*:\d*((.|:)\d*)*\]/g
 		for(let i = 0, len = lyrics.length; i < len; i++) {
@@ -407,6 +408,3 @@ const _getLyric = (song, dispatch) => {
 	})
 }
 
-const rand = (min,max) => {
-	return Math.floor(Math.random()*(max-min+1))+min;
-}

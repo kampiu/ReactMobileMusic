@@ -1,49 +1,20 @@
 import React, {
-	PureComponent,
-	http
+	PureComponent
 } from 'react'
 import './playerList.css'
-import { Toast } from 'antd-mobile'
-import API from '../../../comment/Api'
 import { connect } from 'react-redux'
-import { removeSong, initSong } from './../../../redux/reducers/MusicPlayer'
+import PlayerListItem from './playerListItem'
 
 @connect(
 	state => ({
 		msg: state
 	}), {
-		removeSong,
-		initSong
+		
 	}
 )
 class playerList extends PureComponent {
 	componentDidMount() {
 		
-	}
-	play(e){
-		this.props.initSong(e)
-	}
-	remove(song){
-		let songs = {
-			id: song.id,
-			name: song.name,
-			singer: song.singer,
-			albumPic: song.albumPic,
-			songUrl: '',
-			album: song.album
-		}
-		let data = {
-			song:songs,
-			uid:this.props.msg.user.userId
-		}
-		http.post(API.removeSong(),data).then((res) => {
-			if(res.data.code === 200){
-				Toast.info(res.data.data.msg,0.8)
-				this.props.removeSong(songs)
-			}
-		}).catch((e)=>{
-			console.log("N",e)
-		})
 	}
 	render() {
 		return(
@@ -55,10 +26,7 @@ class playerList extends PureComponent {
 					{
 						this.props.msg.player.songList.map((item,index) => {
 							return (
-								<div className="player-list-item" key={item.id}>
-									<div onClick={ () => { this.play(item) }} className="player-list-name font-break">{item.name} - <span>{item.singer}</span></div>
-									<div className="player-list-remove" onClick={ () => { this.remove(item) }}></div>
-								</div>
+								<PlayerListItem data={item} key={'playlist-item-' + item.id}></PlayerListItem>
 							)
 						})
 					}
@@ -66,7 +34,7 @@ class playerList extends PureComponent {
 					<div className="player-list-foot" onClick={ this.props.fun }>关闭</div>
 				</div>
 			</div>
-		);
+		)
 	}
 }
 

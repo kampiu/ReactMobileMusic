@@ -1,51 +1,53 @@
 const U_LOGIN = "登录状态"
-const U_EXPIRY = "登陆时间过期"
 const U_UPDATEINFO = "更新登录信息"
 const U_LOGOUT = "登出-初始化STATE"
 const U_UPDATEIMG = "更改头像"
 
 let userStore = {
-	sid:null,
-	userSex:0,
-	login:false,
-	expiryTime:"",
-	power:0,
-	userPic:"http://s4.music.126.net/style/web2/img/default/default_album.jpg",
-	userNickname:"请登录",
-	createTime:"",
-	userId:null,
-	email:""
+	acount:"",
+	nickName:"请登录",
+	picUrl:"http://s4.music.126.net/style/web2/img/default/default_album.jpg",
+	birthday:"",
+	waller:0,
+	sex:1,
+	email:"",
+	token:""
 }
 
 export const user = (state = userStore, action) => {
 	switch(action.type) {
 		case U_LOGIN:
-			state.login = action.bool
-			state.sid = action.id
-			return Object.assign({}, state)
-		case U_EXPIRY:
+			state.acount = action.msg.us_acount
+			state.nickName = action.msg.us_nickname 
+			state.picUrl = action.msg.us_picurl
+			state.birthday = action.msg.us_birthday
+			state.waller = action.msg.us_waller
+			state.email = action.msg.us_email
+			state.sex = action.msg.us_sex
+			state.token = action.msg.token
 			return Object.assign({}, state)
 		case U_LOGOUT:
 			const _state = {
-				sid:null,
-				userSex:0,
-				login:false,
-				expiryTime:"",
-				power:0,
-				userPic:"http://s4.music.126.net/style/web2/img/default/default_album.jpg",
-				userNickname:"请登录",
-				createTime:"",
-				userId:null
+				acount:"",
+				nickName:"请登录",
+				picUrl:"http://s4.music.126.net/style/web2/img/default/default_album.jpg",
+				birthday:"",
+				waller:0,
+				sex:1,
+				email:"",
+				token:""
 			}
 			return _state
 		case U_UPDATEINFO:
-			state.login = true
-			state.userId = action.msg.m_id
-			state.power = action.msg.m_power
-			state.userPic = action.msg.m_picurl
-			state.userNickname = action.msg.m_nickname
-			state.createTime = action.msg.m_createtime
-			state.email = action.msg.m_email
+		console.log(action)
+			state.acount = action.msg.us_acount
+			state.nickName = action.msg.us_nickname
+			state.picUrl = action.msg.us_picurl
+			state.birthday = action.msg.us_birthday
+			state.waller = action.msg.us_waller
+			state.email = action.msg.us_email
+			state.sex = action.msg.us_sex
+			state.token = localStorage.getItem("music_billson_token")
 			return Object.assign({}, state)
 		case U_UPDATEIMG:
 			state.userPic = action.url
@@ -55,16 +57,11 @@ export const user = (state = userStore, action) => {
 	}
 }
 
-export function u_login(id,bool) {
+export function u_login(data) {
+	console.log("初始化用户信息",data)
 	return {
 		type: U_LOGIN,
-		bool:bool,
-		id:id
-	}
-}
-export function u_expiry() {
-	return {
-		type: U_EXPIRY
+		msg:data
 	}
 }
 export function u_updateInfo(msg) {

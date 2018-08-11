@@ -33,50 +33,46 @@ class listBodyItem extends PureComponent {
 		let songs = {
 			id: song.id,
 			name: song.name,
-			singer: (song.artists ? song.artists[0].name : song.ar[0].name),
-			albumPic: (song.album ? song.album.picUrl : song.al.picUrl),
+			singer: (song.artists ? song.artists[0].name : (song.ar ? song.ar[0].name : song.singer)),
+			albumPic: (song.album ? (song.album.picUrl ? song.album.picUrl : song.albumPic) : song.al.picUrl),
 			songUrl: '',
-			album: ( song.album ? song.album.name : song.al.name)
+			album: (song.album ? (song.album.name ? song.album.name : song.album) : song.al.name)
 		}
 		http.get(API.getMusicUrl(songs.id)).then((res) => {
-			if(res.data.code === 200){
-				songs.songUrl = res.data.data[0].url
+			if(res.code === 200) {
+				songs.songUrl = res.data[0].url
 				this.props.initSong(songs)
 			}
 		})
 	}
-	addSong(){
-		let song = this.props.data
-		let songs = {
-			id: song.id,
-			name: song.name,
-			singer: (song.artists ? song.artists[0].name : song.ar[0].name),
-			albumPic: (song.album ? song.album.picUrl : song.al.picUrl),
+	addSong() {
+		let songs = this.props.data
+		let song = {
+			id: songs.id,
+			name: songs.name,
+			singer: (songs.artists ? songs.artists[0].name : songs.ar[0].name),
+			albumPic: (songs.album ? songs.album.picUrl : songs.al.picUrl),
 			songUrl: '',
-			album: ( song.album ? song.album.name : song.al.name)
+			album: (songs.album ? songs.album.name : songs.al.name)
 		}
-		let data = {
-			song:songs,
-			uid:this.props.msg.user.userId
-		}
-		http.post(API.putSong(),data).then((res) => {
-			if(res.data.code === 200){
-				this.props.addSong(songs)
-				Toast.info(res.data.data.msg,0.8)
-			}else if(res.data.code === 204){
-				Toast.info(res.data.data.msg,0.8)
+		http.post(API.addSong(), {
+			song: song
+		}).then(res => {
+			if(res.code === 200) {
+				this.props.addSong(song)
 			}
-		}).catch((e)=>{
-			console.log("N",e)
+			Toast.info(res.msg, 0.8)
+		}).catch((e) => {
+			Toast.info("收藏歌曲失败", 0.8)
 		})
 	}
 	render() {
-		return (
+		return(
 			<div className="album-list-item">
 				<div className="album-list-index">{this.props.index + 1}</div>
 				<div className="album-list-song">
 					<div className="album-list-name">{this.props.data.name}</div>
-					<div className="album-list-singer font-break">{this.props.data.artists ? this.props.data.artists[0].name : this.props.data.ar[0].name}</div>
+					<div className="album-list-singer font-break">{this.props.data.artists ? this.props.data.artists[0].name : (this.props.data.singer ? this.props.data.singer : this.props.data.ar[0].name)}</div>
 				</div>
 				<div className="album-list-console">
 					<img onClick={ this.play } alt="" src="./img/album-list-play.png" />

@@ -10,7 +10,6 @@ class navBar extends PureComponent {
 			title:this.props.title,
 			scroll:0
 		}
-		console.log(this.props)
 		this.onScroll = this.onScroll.bind(this)
 		this.scrollToTop = this.scrollToTop.bind(this)
 		this.toPages = this.toPages.bind(this)

@@ -25,7 +25,7 @@ class MusicRanking extends PureComponent {
 		if(this.props.msg.ranking.loading){
 			Toast.loading('Loading...',10)
 			http.get(API.getRanking()).then((res) => {
-				this.props.r_init(res.data.list)
+				this.props.r_init(res.list)
 				this.props.r_loading()
 				Toast.hide()
 			})
@@ -47,7 +47,7 @@ class MusicRanking extends PureComponent {
 								return (
 									<div className="ranking-item" key={item.id} onClick={ () => { window.location.hash = "/rankitem/" + index + "/" + item.id }}>
 										<div className="ranking-img">
-											<img alt="" src={item.coverImgUrl} />
+											<img alt="" src={item.coverImgUrl + '?param=140y140'} />
 										</div>
 										<div className="ranking-list">
 											{
@@ -65,7 +65,7 @@ class MusicRanking extends PureComponent {
 								</div>
 								)
 							}else{
-								return
+								return 
 							}
 								
 						})

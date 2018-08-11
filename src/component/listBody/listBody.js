@@ -20,7 +20,7 @@ import API from '../../comment/Api'
 
 class listBody extends PureComponent {
 	componentWillMount() {
-		console.log("music",this.props)
+		
 	}
 	componentDidMount() {
 
@@ -35,8 +35,8 @@ class listBody extends PureComponent {
 			album: ( song.album ? song.album.name : song.al.name)
 		}
 		http.get(API.getMusicUrl(songs.id)).then((res) => {
-			if(res.data.code === 200){
-				songs.songUrl = res.data.data[0].url
+			if(res.code === 200){
+				songs.songUrl = res.data[0].url
 				this.props.initSong(songs)
 			}
 		})
@@ -55,11 +55,11 @@ class listBody extends PureComponent {
 			uid:this.props.msg.user.userId
 		}
 		http.post(API.putSong(),data).then((res) => {
-			if(res.data.code === 200){
+			if(res.code === 200){
 				this.props.addSong(songs)
-				Toast.info(res.data.data.msg,0.8)
+				Toast.info(res.data.msg,0.8)
 			}else if(res.data.code === 204){
-				Toast.info(res.data.data.msg,0.8)
+				Toast.info(res.data.msg,0.8)
 			}
 		}).catch((e)=>{
 			console.log("N",e)

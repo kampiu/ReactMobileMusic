@@ -1,10 +1,7 @@
 import React, {
-	PureComponent,
-	http
+	PureComponent
 } from 'react'
 import './MusicPlayer.css' 
-import API from '../../comment/Api'
-import { Toast } from 'antd-mobile'
 import PlayerList from './playerList/playerList'
 import { connect } from 'react-redux'
 import { changPlay, changeSongIndex, loadSong, addSong, changemode, removeSong, changCurrent, initSong, initDuration, prevPlay, nextPlay, p_initsonglist } from './../../redux/reducers/MusicPlayer'
@@ -42,21 +39,7 @@ class MusicPlayer extends PureComponent {
 		this.toggleList = this.toggleList.bind(this)
 	}
 	componentWillMount() {
-		this.loading()
-	}
-	loading() {
-		if(this.props.msg.collection.loading) {
-			Toast.loading('Loading...', 10)
-			http.get(API.getUserList()).then((res) => {
-				if(res.data.code === 200) {
-					this.props.p_initsonglist(res.data.data.playlist.list)
-					this.props.c_initLoading()
-				}
-				Toast.hide()
-			}).catch(() => {
-				this.loading()
-			})
-		}
+		
 	}
 	componentDidMount() {
 
@@ -130,7 +113,7 @@ class MusicPlayer extends PureComponent {
 					</div>
 				</div>
 				{
-					this.state.list ? <PlayerList data={ this.state.list } fun={ this.toggleList.bind(this) }></PlayerList> : null
+					this.state.list ? <PlayerList data={ this.state.list } fun={ this.toggleList.bind(this) } key="playlist-put"></PlayerList> : null
 				}
 				<div style={{backgroundImage: "url(" + this.props.msg.player.audio.albumPic + ")"}} className="player-mask"></div>
 			</div>

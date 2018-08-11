@@ -25,7 +25,7 @@ class rankingItem extends PureComponent {
 		return(
 			<div className="box-grid-item" style={{width:this.props.w}} onClick={ this.toPages }>
 				<div className="box-grid-item-img" style={{height:this.props.w}}>
-					<img className="load-img" alt="" src={this.props.data.coverImgUrl} onLoad={this.imgLoad} />
+					<img className="load-img" alt="" src={this.props.data.coverImgUrl + '?param=140y140'} onLoad={this.imgLoad} />
 					<img alt="" className="img-default" src="./img/default.jpg" />
 				</div>
 				<div className="box-grid-item-content font-break">

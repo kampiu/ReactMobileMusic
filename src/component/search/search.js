@@ -55,10 +55,11 @@ class search extends PureComponent {
 		this.searching()
 	}
 	searching(){
-		http.get(API.getSearch(this.state.searchWord)).then((res)=>{
-			if(res.data.code === 200 && res.data.result.songCount > 0){
+		http.get(API.getSearch(this.state.searchWord)).then(res => {
+			console.log(res)
+			if(res.code === 200 && res.result.songCount > 0){
 				this.setState({
-					result:res.data.result.songs
+					result:res.result.songs
 				})
 			}
 		}).catch((res)=>{
@@ -75,31 +76,27 @@ class search extends PureComponent {
 			album: song.album.name
 		}
 		http.get(API.getMusicUrl(songs.id)).then((res) => {
-			if(res.data.code === 200){
-				songs.songUrl = res.data.data[0].url
+			if(res.code === 200){
+				songs.songUrl = res.data[0].url
 				this.props.initSong(songs)
 			}
 		})
 	}
-	addSong(song){
-		let songs = {
-			id: song.id,
-			name: song.name,
-			singer: song.artists[0].name,
-			albumPic: song.album.artist.img1v1Url,
+	addSong(songs){
+		let song = {
+			id: songs.id,
+			name: songs.name,
+			singer: songs.artists[0].name,
+			albumPic: songs.album.artist.img1v1Url,
 			songUrl: '',
-			album: song.album.name
+			album: songs.album.name
 		}
-		let data = {
-			song:songs,
-			uid:this.props.msg.user.userId
-		}
-		http.post(API.putSong(),data).then((res) => {
-			if(res.data.code === 200){
-				this.props.addSong(songs)
-				Toast.info(res.data.data.msg,0.8)
-			}else if(res.data.code === 204){
-				Toast.info(res.data.data.msg,0.8)
+		http.post(API.addSong(),{song:song}).then(res => {
+			if(res.code === 200){
+				this.props.addSong(song)
+				Toast.info(res.msg,0.8)
+			}else {
+				Toast.info(res.msg,0.8)
 			}
 		}).catch((e)=>{
 			console.log("N",e)

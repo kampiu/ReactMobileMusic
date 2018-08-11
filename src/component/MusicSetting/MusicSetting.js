@@ -25,6 +25,12 @@ const prompt = Modal.prompt;
 class MusicSetting extends PureComponent {
 	constructor(props) {
 		super(props)
+		this.state = {
+			admin: {
+				name: this.props.data.user.nickName,
+				email: this.props.data.user.email
+			}
+		}
 		this.setName = this.setName.bind(this)
 		this.toSettingImg = this.toSettingImg.bind(this)
 		this.setEmail = this.setEmail.bind(this)
@@ -39,72 +45,66 @@ class MusicSetting extends PureComponent {
 
 	}
 	setName() {
-		let _title = '限制4~16中英文下划线名字'
+		let _title = '限制2~16中英文名字'
 		prompt('修改昵称', _title, [{
 			text: '取消'
 		}, {
 			text: '修改',
-			onPress: value => this.put(value,"nickname",_title)
-		}], 'default', this.props.data.user.userNickname)
+			onPress: value => this.put(value, "name", _title)
+		}], 'default', this.props.data.user.nickName)
 	}
-	setEmail(){
+	setEmail() {
 		let _title = '限制正规的邮箱格式'
-		prompt('修改昵称',_title, [{
+		prompt('修改昵称', _title, [{
 			text: '取消'
 		}, {
 			text: '修改',
-			onPress: value => this.put(value,"email",_title)
+			onPress: value => this.put(value, "email", _title)
 		}], 'default', this.props.data.user.email)
 	}
-	put(value,name,msg) {
+	put(value, name, msg) {
 		return new Promise((resolve, reject) => {
-			console.log(value,name)
-			if(value === this.props.data.user.userNickname){
+			if(value === this.props.data.user.nickName) {
 				return resolve()
 			}
-			let bool = this.check(value,name),ms = {}
-			console.log(bool,name)
+			let bool = this.check(value, name),
+				ms = this.state.admin
 			ms[name] = value
-			bool ? Toast.loading("Loading...",20) : Toast.info(msg,1)
+			console.log(ms, this.props.data.user)
+			bool ? Toast.loading("Loading...", 20) : Toast.info(msg, .8)
 			bool ? (
-				http.post(API.resetInfo(),ms).then((res)=>{
-					console.log("返回数据:",res)
-					if(res.data.code === 200){
-						Toast.hide()
-						Toast.info("修改成功!",1)
-						this.props.u_updateInfo(res.data.result)
+				http.post(API.modifyInfo(), ms).then((res) => {
+					console.log("返回数据:", res)
+					if(res.code === 200) {
+						Toast.info("修改成功!", .8)
+						this.props.u_updateInfo(res.result)
 						resolve()
 					}
-				}).catch((res)=>{
-					Toast.info("修改失败!",1)
+					Toast.hide()
+				}).catch((res) => {
+					Toast.info("修改失败!", .8)
 					reject()
 				})
 			) : null
 		})
 	}
-	check(str,name) {
-		let nick = /^[\u4e00-\u9fa5_a-zA-Z]{4,16}$/g,
+	check(str, name) {
+		let nick = /^[\u4e00-\u9fa5_a-zA-Z.]{2,16}$/,
 			kong = /(^\s*)|(\s*)$/g,
-			email = /^[a-zA-Z0-9_-]+@[a-zA-Z0-9_-]+(\.[a-zA-Z0-9_-]+)+$/,
+			email = /^[A-Za-z0-9\u4e00-\u9fa5]+@[a-zA-Z0-9_-]+(\.[a-zA-Z0-9_-]+)+$/,
 			reg = null
-			switch(name){
-				case "nickname":reg = nick.test(str)
-					break
-				case "email":reg = email.test(str)
-					break
-				default:
-					break
-			}
+		switch(name) {
+			case "name":
+				reg = nick.test(str)
+				break
+			case "email":
+				reg = email.test(str)
+				break
+			default:
+				break
+		}
 		str.replace(kong, "")
-		console.log("!!!")
 		return reg
-	}
-	checkEmail(e) {
-		let str = e,
-			email = /^[\u4e00-\u9fa5_a-zA-Z]{4,16}$/g,
-			kong = /(^\s*)|(\s*)$/g
-		str.replace(kong, "")
-		return(email.test(str))
 	}
 	toSettingImg() {
 		window.location.hash = "/modifyUpload"
@@ -117,13 +117,13 @@ class MusicSetting extends PureComponent {
 					<div className="setting-item">
 						<div className="setting-name">头像</div>
 						<div className="setting-input" onClick={this.toSettingImg}>
-							<img alt="" src={this.props.data.user.userPic} />
+							<img alt="" src={this.props.data.user.picUrl} />
 						</div>
 					</div>
 					<div className="setting-item" onClick={this.setName}>
 						<div className="setting-name">昵称</div>
 						<div className="setting-input">
-							<span>{this.props.data.user.userNickname}</span>
+							<span>{this.props.data.user.nickName}</span>
 						</div>
 					</div>
 					<div className="setting-item" onClick={this.setEmail}>

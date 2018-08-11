@@ -1,13 +1,9 @@
-const _baseUrl = 'https://api.billson.club/api'
-//const _baseUrl = 'http://localhost:3002/api'
-//const _baseUrlPHP = 'http://localhost:8088'
+//const _baseUrl = 'https://api.billson.club/api'
+const _baseUrl = 'http://localhost:3002/api'
 //const _baseUrl = 'http://192.168.0.159:3002/api'
 
 
 export default {
-	login(account,password) {		
-		return _baseUrl + '/login/cellphone?phone=' + account + '&password=' + password
-	},
 	userPlayList(id){
 		return _baseUrl + '/user/playlist?uid=' + id 
 	},
@@ -56,32 +52,11 @@ export default {
 	getRadioStation(){
 		return _baseUrl + '/dj/recommend'
 	},
-	getSearch(keywords){
-		return _baseUrl + '/search/suggest?keywords=' + keywords
-	},
+//	getSearch(keywords){
+//		return _baseUrl + '/search/suggest?keywords=' + keywords
+//	},
 	getRanking(){
 		return _baseUrl + '/ranking'
-	},
-	acount(){
-		return _baseUrl + '/acount'
-//		return _baseUrlPHP + '/login'
-	},
-	logout(){
-		return _baseUrl + '/logout'
-//		return _baseUrlPHP + '/logout'
-	},
-	getUserList(){
-		return _baseUrl + '/getsongList'
-	},
-	putSong(){
-		return _baseUrl + '/songs/collection'
-	},
-	removeSong(){
-		return _baseUrl + '/songs/remove'
-	},
-	getRegister(){
-		return _baseUrl + '/register'
-//		return _baseUrlPHP + '/register'
 	},
 	getSuggest(words){
 		return _baseUrl + '/search/suggest?keywords=' + words
@@ -89,10 +64,36 @@ export default {
 	getSearch(words){
 		return _baseUrl + '/search?keywords=' + words
 	},
-	resetInfo(){
-		return _baseUrl + '/modify'
+	getHome(){
+		return _baseUrl + '/music/home'
 	},
-	uploadImg(){
-		return _baseUrl + '/modify/upload'
-	}
+	addSong(){
+		return _baseUrl + '/user/collect/add'
+	},
+	removeSong(){
+		return _baseUrl + '/user/collect/remove'
+	},
+	//webside
+	login() {		
+		return _baseUrl + '/user/login'
+	},
+	getPhoneCode(){
+		return _baseUrl + '/user/code'
+	},
+	getRegister(){
+		return _baseUrl + '/user/register'
+	},
+	getUserInfo(){
+		return _baseUrl + '/user/getinfo'
+	},
+	getUserList(){
+		return _baseUrl + '/user/collect'
+	},
+	modifyInfo(){
+		return _baseUrl + '/user/modify/info'
+	},
+//	uploadImg(){
+//		return _baseUrl + '/modify/upload'
+//	}
+	
 }

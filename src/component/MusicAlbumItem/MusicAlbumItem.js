@@ -31,8 +31,8 @@ class MusicAlbumItem extends PureComponent {
 		document.documentElement.scrollTop = 0
 		if(this.props.match.params.id !== this.props.msg.albumItem.albumId){
 			Toast.loading('Loading...',8000)
-			http.get(API.getAlbumList(this.props.match.params.id)).then((res) => {
-				let { tracks:list  , ...info } = res.data.result
+			http.get(API.getAlbumList(this.props.match.params.id)).then(res => {
+				let { tracks:list  , ...info } = res.result
 				this.props.ai_init(list)
 				this.props.ai_change(this.props.match.params.id)
 				this.props.ai_initInfo(info)

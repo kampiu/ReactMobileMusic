@@ -2,8 +2,8 @@ import React, {
 	PureComponent,
 	http
 } from 'react'
-import BoxGrid from './../boxGrid/boxGrid' 
-import ExclusivePush from './exclusivePush/exclusivePush' 
+import BoxGrid from './../boxGrid/boxGrid'
+import ExclusivePush from './exclusivePush/exclusivePush'
 import Search from './../search/search'
 import { Carousel, WingBlank, Toast } from 'antd-mobile'
 import { connect } from 'react-redux'
@@ -33,49 +33,18 @@ class MusicIndex extends PureComponent {
 		this.onload = this.onload.bind(this)
 	}
 	initData() {
-		let count = 5
-		http.get(API.getBananer()).then((res) => {
-			this.props.initTab(res.data.banners)
-			if(--count === 0) {
+		http.get(API.getHome()).then(res => {
+			if(res.code === 200) {
+				this.props.initTab(res.data.banner)
+				this.props.initMusic(res.data.playlist)
+				this.props.initCD(res.data.cd)
+				this.props.initMV(res.data.mv)
+				this.props.initRadio(res.data.radio)
 				this.props.indexLoading()
-				Toast.hide()
 			}
-		})
-		http.get(API.getAlbum('全部', 'hot', 0, true, 9)).then((res) => {
-			this.props.initMusic(res.data.playlists)
-			if(--count === 0) {
-				this.props.indexLoading()
-				Toast.hide()
-			}
-		})
-		http.get(API.getNewCd(0, 9, 'All')).then((res) => {
-			this.props.initCD(res.data.albums)
-			if(--count === 0) {
-				this.props.indexLoading()
-				Toast.hide()
-			}
-		})
-		http.get(API.getnewMv()).then((res) => {
-			let arr = []
-			for(let i = 0; i < 5; i++) {
-				arr.push(res.data.data[i])
-			}
-			this.props.initMV(arr)
-			if(--count === 0) {
-				this.props.indexLoading()
-				Toast.hide()
-			}
-		})
-		http.get(API.getRadioStation()).then((res) => {
-			let arr = []
-			for(let i = 0; i < 9; i++) {
-				arr.push(res.data.djRadios[i])
-			}
-			this.props.initRadio(arr)
-			if(--count === 0) {
-				this.props.indexLoading()
-				Toast.hide()
-			}
+			Toast.hide()
+		}).catch(err => {
+			Toast.info('数据加载失败!', 1)
 		})
 	}
 	componentDidMount() {
@@ -84,11 +53,10 @@ class MusicIndex extends PureComponent {
 	componentWillUnmount() {
 
 	}
-	onload(){
+	onload() {
 		window.dispatchEvent(new Event('resize'))
 	}
 	render() {
-		console.log("Index --- render执行一次")
 		return(
 			<div className="app-view">
 			    {

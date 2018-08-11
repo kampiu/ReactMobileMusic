@@ -5,7 +5,6 @@ import './boxGridItem.css'
 import { Toast } from 'antd-mobile'
 import { connect } from 'react-redux'
 import { initSong } from './../../redux/reducers/MusicPlayer'
-import API from '../../comment/Api'
 
 @connect(
 	state => ({
@@ -73,7 +72,7 @@ class boxGridItem extends PureComponent {
 		);
 	}
 	timeForm(e) {
-		let v = parseInt(e)
+		let v = parseInt(e, 10)
 		if(v < 9999) {
 			return v
 		} else {

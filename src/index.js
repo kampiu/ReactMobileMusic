@@ -11,7 +11,7 @@ import axios from './comment/http.js'
 import { rootReducer } from './redux/index'
 import thunk from 'redux-thunk'
 import { Provider } from 'react-redux'
-import crypto from 'crypto'
+import crypto from 'crypto-js'
 
 const store = createStore(rootReducer, compose(
 	applyMiddleware(thunk),
@@ -44,8 +44,8 @@ ReactDOM.render(
 		} else if(d.body) {
 			sp = d.body.scrollTop
 		}
-		return sp;
+		return sp
 	})
-})(document, window);
+})(document, window)
 
-registerServiceWorker();
+registerServiceWorker()

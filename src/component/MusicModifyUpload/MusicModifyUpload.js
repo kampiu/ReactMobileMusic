@@ -9,6 +9,8 @@ import './MusicModifyUpload.css'
 import API from '../../comment/Api'
 import { connect } from 'react-redux'
 import { u_updateImg } from './../../redux/reducers/MusicUser'
+import Cropper from 'react-cropper';
+import 'cropperjs/dist/cropper.css'
 
 let canvas, context,
 	img,

@@ -2,10 +2,8 @@ import React, {
 	PureComponent,
 	http
 } from 'react'
-import TitleBar from './../titleBar/titleBar'
 import './MusicCollection.css'
 import { Toast } from 'antd-mobile'
-import Cookies from 'js-cookie'
 import API from '../../comment/Api'
 import { connect } from 'react-redux'
 import {
@@ -13,6 +11,8 @@ import {
 	initSong,
 	p_initsonglist
 } from './../../redux/reducers/MusicPlayer'
+import ListHeader from './../listHeader/listHeader'
+import CollectList from './../collectList/collectList'
 import { c_initLoading } from './../../redux/reducers/MusicCollection'
 
 @connect(
@@ -27,31 +27,6 @@ import { c_initLoading } from './../../redux/reducers/MusicCollection'
 )
 
 class MusicCollection extends PureComponent {
-	constructor(props) {
-		super(props)
-	}
-	componentWillMount() {
-		if(this.props.location.pathname.indexOf("history") === -1){
-			this.loading()
-		}
-	}
-	loading() {
-		if(this.props.msg.collection.loading) {
-			Toast.loading('Loading...', 10)
-			http.get(API.getUserList()).then((res) => {
-				if(res.data.code === 200) {
-					this.props.p_initsonglist(res.data.data.playlist.list)
-					this.props.c_initLoading()
-				}
-				Toast.hide()
-			}).catch(() => {
-				this.loading()
-			})
-		}
-	}
-	componentDidMount() {
-
-	}
 	play(song) {
 		let songs = {
 			id: song.id,
@@ -62,7 +37,7 @@ class MusicCollection extends PureComponent {
 			album: song.album
 		}
 		http.get(API.getMusicUrl(songs.id)).then((res) => {
-			if(res.data.code === 200){
+			if(res.data.code === 200) {
 				songs.songUrl = res.data.data[0].url
 				this.props.initSong(songs)
 			}
@@ -77,47 +52,24 @@ class MusicCollection extends PureComponent {
 			songUrl: '',
 			album: song.album
 		}
-		let data = {
-			song: songs,
-			uid: this.props.msg.user.userId
-		}
-		http.post(API.removeSong(), data).then((res) => {
-			if(res.data.code === 200) {
-				Toast.info(res.data.data.msg, 0.8)
+		http.post(API.removeSong(), {
+			song: songs
+		}).then((res) => {
+			if(res.code === 200) {
 				this.props.removeSong(songs)
 			}
+			Toast.info(res.msg, 0.8)
 		}).catch((e) => {
-			console.log("N", e)
+			Toast.info("移除歌曲出错", 0.8)
 		})
 	}
 	render() {
-		let len = this.props.location.pathname.indexOf("history") === -1 ? this.props.msg.player.songList.length : (localStorage.getItem("music_history") ? JSON.parse(localStorage.getItem("music_history")).length : 0)
-		let list = this.props.location.pathname.indexOf("history") === -1 ? this.props.msg.player.songList : (localStorage.getItem("music_history") ? JSON.parse(localStorage.getItem("music_history")) : [])
 		return(
 			<div className="collection-view">
-				<TitleBar back={this.props.location.pathname.indexOf("history") === -1 ? null:true} title={this.props.location.pathname.indexOf("history") === -1 ? "收藏" : "历史"}></TitleBar>
-				<div className="collection-list">
-					<div className="collection-list-title">{this.props.location.pathname.indexOf("history") === -1 ? "歌单歌曲" : "收听历史"}共{"(" + len + ")"}首</div>
-					{
-						list.map((item,index) => {
-							return (
-								<div className="collection-item" key={item.id}>
-									<div className="collection-index">{index + 1}</div>
-									<div className="collection-msg">
-										<div className="collection-name">{item.name}</div>
-										<div className="collection-singer">{item.singer}</div>
-									</div>
-									<div className="collection-console">
-										<span onClick={ () => { this.play(item) }}></span>
-										<span onClick={ () => { this.remove(item) }}></span>
-									</div>
-								</div>
-							)
-						})
-					}
-				</div>
+				<ListHeader data={ this.props.msg.albumItem.info } key={"MusicCOLLECTHead"} isCollect={ true } ></ListHeader>
+				<CollectList data={ this.props.msg.player.songList } index="MusicCOLLECT" key={"collect_user"}></CollectList>
 			</div>
-		);
+		)
 	}
 }
 

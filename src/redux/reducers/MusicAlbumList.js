@@ -12,7 +12,7 @@ let albumListStore = {
 	loading:true,
 	songs:[]
 }
-// reducer
+
 export const albumList = (state = albumListStore, action) => {
 	switch(action.type) {
 		case CHANGE_TYPE:

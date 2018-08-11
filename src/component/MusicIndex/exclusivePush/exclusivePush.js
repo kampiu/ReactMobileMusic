@@ -4,15 +4,6 @@ import React, {
 import './exclusivePush.css'
 
 class exclusivePush extends PureComponent{
-	constructor(props) {
-		super(props)
-	}
-	componentWillMount() {
-		
-	}
-	componentDidMount() {
-		
-	}
 	render() {
 		return(
 			<div className="exclusivepush-view">

@@ -5,6 +5,7 @@ import { index } from './reducers/MusicIndex'
 import { albumItem } from './reducers/MusicAlbumItem'
 import { ranking } from './reducers/MusicRanking'
 import { user } from './reducers/MusicUser'
+import { cd } from './reducers/MusicCdList'
 import { collection } from './reducers/MusicCollection'
 
 
@@ -16,6 +17,7 @@ export const rootReducer = combineReducers({
     player,
     ranking,
     user,
+    cd,
     collection
 })
 

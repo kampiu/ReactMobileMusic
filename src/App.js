@@ -10,13 +10,10 @@ import Loading from './component/loading/loading'
 import Audio from './component/audio/audio'
 import API from './comment/Api'
 //Component
-//redux
-import Cookies from 'js-cookie'
-import { u_login, u_expiry, u_updateInfo } from './redux/reducers/MusicUser'
-
+import { u_login, u_updateInfo } from './redux/reducers/MusicUser'
+import { p_initsonglist } from './redux/reducers/MusicPlayer'
 //Ant
-import { TabBar } from 'antd-mobile'
-
+import { TabBar, Toast } from 'antd-mobile'
 
 //懒加载 view
 const MusicIndex = Loadable({
@@ -80,16 +77,41 @@ const MusicModifyUpload = Loadable({
 	timeout: 10000
 })
 
+const MusicLogin = Loadable({
+	loader: () =>
+		import('./component/MusicLogin/MusicLogin'),
+	loading: Loading,
+	timeout: 10000
+})
+const MusicRegister = Loadable({
+	loader: () =>
+		import('./component/MusicRegister/MusicRegister'),
+	loading: Loading,
+	timeout: 10000
+})
+const MusicHistory = Loadable({
+	loader: () =>
+		import('./component/MusicHistory/MusicHistory'),
+	loading: Loading,
+	timeout: 10000
+})
+const MusicCdList = Loadable({
+	loader: () =>
+		import('./component/MusicCdList/MusicCdList'),
+	loading: Loading,
+	timeout: 10000
+})
+
+
 @connect(
 	state => ({
 		data: state
 	}), {
 		u_login,
-		u_expiry,
-		u_updateInfo
+		u_updateInfo,
+		p_initsonglist
 	}
 )
-//10-7B-44-49-A5-36
 
 class App extends Component {
 	constructor(props) {
@@ -99,34 +121,42 @@ class App extends Component {
 			hidden: false
 		};
 	}
-	componentWillMount(){
-		console.log(Cookies.get())
-//		if(Cookies.get().accessToken){
-			http.post(API.acount()).then((res) => {
-				console.log(res)
-				if(res.data.code === 200) {
-					this.props.u_updateInfo(res.data.data.user)
-				}
+	componentWillMount() {
+		if(this.props.data.user.token === "" && localStorage.getItem("music_billson_token")) {
+			http.post(API.getUserInfo()).then(res => {
+				res.code === 200 && this.props.u_updateInfo(res.result.data[0])
+				Toast.info(res.msg, 0.8)
+				this.initList()
+			}).catch(err => {
+				Toast.info('登录出错!', 1)
 			})
-//		}
+		}
+	}
+	initList() {
+		http.post(API.getUserList()).then(res => {
+			res.code === 200 && this.props.p_initsonglist(res.result.col_list)
+			Toast.info(res.msg, 0.8)
+		}).catch(err => {
+			Toast.info('获取收藏列表失败!', .8)
+		})
 	}
 	componentDidMount() {
-		
+
 	}
 	componentWillReceiveProps(newProps) {
-		
+
 	}
 	shouldComponentUpdate(newProps, newState) {
-		return true;
+		return true
 	}
 	componentWillUpdate(nextProps, nextState) {
-		
+
 	}
 	componentDidUpdate(prevProps, prevState) {
-		
+
 	}
 	componentWillUnmount() {
-		
+
 	}
 	render() {
 		return(
@@ -142,8 +172,11 @@ class App extends Component {
 						<Route path="/player" component={ MusicPlayer } />
 						<Route path="/rankitem/:index/:id" component={ MusicRankingItem } />
 						<Route path="/setting" component={ MusicSetting } />
+						<Route path="/register" component={ MusicRegister } />
+						<Route path="/login" component={ MusicLogin } />
+						<Route path="/song" component={ MusicCdList } />
+						<Route path="/history" component={ MusicHistory } />
 						<Route path="/modifyUpload" component={ MusicModifyUpload } />
-						<Route key="history" path="/history" component={ MusicCollection } />
 			        </div>
 				</Router>
 		        <div className="App-tabbar">
