@@ -3,13 +3,21 @@ import React, {
 	http
 } from 'react'
 import TitleBar from './../titleBar/titleBar'
+import ModifyIcon from './../modifyIcon/modifyIcon'
 import './MusicSetting.css'
 import { connect } from 'react-redux'
 import { u_login, u_logout, u_updateInfo } from './../../redux/reducers/MusicUser'
 import { p_initList } from './../../redux/reducers/MusicPlayer'
-import { Modal, Toast } from 'antd-mobile'
+import { Modal, Toast, ActionSheet } from 'antd-mobile'
 import API from '../../comment/Api'
-const prompt = Modal.prompt;
+const prompt = Modal.prompt
+//const isIPhone = new RegExp('\\biPhone\\b|\\biPod\\b', 'i').test(window.navigator.userAgent)
+//let wrapProps
+//if(isIPhone) {
+//	wrapProps = {
+//		onTouchStart: e => e.preventDefault(),
+//	}
+//}
 
 @connect(
 	state => ({
@@ -29,11 +37,16 @@ class MusicSetting extends PureComponent {
 			admin: {
 				name: this.props.data.user.nickName,
 				email: this.props.data.user.email
-			}
+			},
+			settingImg: false,
+			data: {},
+			formData:{}
 		}
 		this.setName = this.setName.bind(this)
 		this.toSettingImg = this.toSettingImg.bind(this)
 		this.setEmail = this.setEmail.bind(this)
+		this.toPutSelect = this.toPutSelect.bind(this)
+		this.toCloseView = this.toCloseView.bind(this)
 	}
 	componentWillMount() {
 
@@ -70,22 +83,20 @@ class MusicSetting extends PureComponent {
 			let bool = this.check(value, name),
 				ms = this.state.admin
 			ms[name] = value
-			console.log(ms, this.props.data.user)
 			bool ? Toast.loading("Loading...", 20) : Toast.info(msg, .8)
-			bool ? (
+			bool && (
 				http.post(API.modifyInfo(), ms).then((res) => {
-					console.log("返回数据:", res)
 					if(res.code === 200) {
-						Toast.info("修改成功!", .8)
 						this.props.u_updateInfo(res.result)
 						resolve()
 					}
+					Toast.info(res.msg, .8)
 					Toast.hide()
 				}).catch((res) => {
 					Toast.info("修改失败!", .8)
 					reject()
 				})
-			) : null
+			)
 		})
 	}
 	check(str, name) {
@@ -106,8 +117,40 @@ class MusicSetting extends PureComponent {
 		str.replace(kong, "")
 		return reg
 	}
-	toSettingImg() {
-		window.location.hash = "/modifyUpload"
+	toPutSelect() {
+		const BUTTONS = ['修改头像', '取消'],
+			FLAGS = [true, false]
+		ActionSheet.showActionSheetWithOptions({
+				options: BUTTONS,
+				cancelButtonIndex: BUTTONS.length - 1,
+				message: '请选择相应的操作',
+				maskClosable: true,
+				'data-seed': 'logId'
+			},
+			e => {
+				if(FLAGS[e]) {
+					document.getElementById("userFileIcon").click()
+				}
+			})
+	}
+	toCloseView() {
+		document.getElementById("userFileIcon").value = ""
+		this.setState({
+			settingImg: false
+		})
+	}
+	toSettingImg(e) {
+		let reader = new FileReader()
+		let file = document.getElementById("userFileIcon").files[0]
+		reader.onload = e => {
+			console.log(e.target)
+			this.setState({
+				settingImg: true,
+				data: e.target.result,
+				formData:file
+			})
+		}
+		reader.readAsDataURL(file)
 	}
 	render() {
 		return(
@@ -116,10 +159,11 @@ class MusicSetting extends PureComponent {
 				<div className="setting-box">
 					<div className="setting-item">
 						<div className="setting-name">头像</div>
-						<div className="setting-input" onClick={this.toSettingImg}>
+						<div className="setting-input" onClick={this.toPutSelect}>
 							<img alt="" src={this.props.data.user.picUrl} />
 						</div>
 					</div>
+					<input onChange={ this.toSettingImg } accept="image/jpg, image/png, image/jpeg" id="userFileIcon" name="file" type="file" />
 					<div className="setting-item" onClick={this.setName}>
 						<div className="setting-name">昵称</div>
 						<div className="setting-input">
@@ -133,7 +177,9 @@ class MusicSetting extends PureComponent {
 						</div>
 					</div>
 				</div>
-				
+				{
+					this.state.settingImg ? <ModifyIcon src={ this.state.data } formData={this.state.formData} onFun={ this.toCloseView }></ModifyIcon> : null
+				}
 			</div>
 		);
 	}

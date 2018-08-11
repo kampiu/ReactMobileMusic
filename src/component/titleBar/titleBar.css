@@ -1,7 +1,6 @@
 .titlebar-view{
 	width:100%;
-	height:0.8rem;
-	max-height:46px;
+	height:46px;
 	line-height: 46px;
 	display:flex;
 	align-items: center;

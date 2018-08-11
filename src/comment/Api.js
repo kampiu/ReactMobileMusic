@@ -92,8 +92,8 @@ export default {
 	modifyInfo(){
 		return _baseUrl + '/user/modify/info'
 	},
-//	uploadImg(){
-//		return _baseUrl + '/modify/upload'
-//	}
+	uploadImg(){
+		return _baseUrl + '/user/modify'
+	}
 	
 }

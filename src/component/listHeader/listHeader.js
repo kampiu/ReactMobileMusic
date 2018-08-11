@@ -2,6 +2,7 @@ import React, {
 	PureComponent
 } from 'react'
 import NavBar from './../navBar/navBar'
+import TitleBar from './../titleBar/titleBar'
 import './listHeader.css'
 import { connect } from 'react-redux'
 import {
@@ -18,10 +19,12 @@ import {
 
 class listHeader extends PureComponent {
 	render() {
-		let img = this.props.isCollect ? this.props.msg.user.picUrl : this.props.data.coverImgUrl
+		let img = this.props.isCollection ? this.props.msg.user.picUrl : this.props.data.coverImgUrl
 		return(
 			<div className="album-view-head">
-				<NavBar title={"歌单"}></NavBar>
+				{
+					this.props.isCollection ? <TitleBar title={this.props.msg.user.nickName + "的歌单"}></TitleBar> : <NavBar title={"歌单"}></NavBar>
+				}
 				<div className="album-view-content">
 					<div className="album-view-img">
 						<img alt="" src={ img } />

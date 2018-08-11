@@ -64,7 +64,7 @@ class MusicIndex extends PureComponent {
 			        	<div>
 							<Search></Search>
 							<WingBlank key="tabImg">
-						        <Carousel autoplay={true} infinite beforeChange={(from, to) => {}} afterChange={index =>  {}} >
+						        <Carousel autoplay={true} infinite >
 						       		{
 						       			this.props.data.index.tabImg.map((item,index) => {
 						        			return <img src={item.pic} alt="" key={"Adv" + index} style={{ width: '100%', verticalAlign: 'top' }} onLoad={ this.onload } />

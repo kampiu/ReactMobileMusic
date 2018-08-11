@@ -39,7 +39,6 @@ export const user = (state = userStore, action) => {
 			}
 			return _state
 		case U_UPDATEINFO:
-		console.log(action)
 			state.acount = action.msg.us_acount
 			state.nickName = action.msg.us_nickname
 			state.picUrl = action.msg.us_picurl

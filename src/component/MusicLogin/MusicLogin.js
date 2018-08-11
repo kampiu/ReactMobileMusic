@@ -4,6 +4,7 @@ import React, {
 	crypto
 } from 'react'
 import { u_login, u_updateInfo } from './../../redux/reducers/MusicUser'
+import { p_initsonglist } from '../../redux/reducers/MusicPlayer'
 import { Toast } from 'antd-mobile'
 import API from '../../comment/Api'
 import { connect } from 'react-redux'
@@ -15,7 +16,8 @@ import './MusicLogin.css'
 		data: state
 	}), {
 		u_login,
-		u_updateInfo
+		u_updateInfo,
+		p_initsonglist
 	}
 )
 
@@ -35,16 +37,6 @@ class MusicLogin extends PureComponent{
 		this.logining = this.logining.bind(this)
 		this.Register = this.Register.bind(this)
 	}
-	componentWillMount() {
-		
-		
-	}
-	componentDidMount() {
-		
-	}
-	componentWillUnmount() {
-		
-	}
 	check(e){
 		let admin = this.state.user,
 			name = e.target.getAttribute("name"),
@@ -63,8 +55,12 @@ class MusicLogin extends PureComponent{
 			return	
 		}
 		http.post(API.login(),{acount:this.state.user.acount,pwd:this.state.user.pwd}).then(res => {
-			res.code === 200 && localStorage.setItem("music_billson_token",res.result.token)
-			res.code === 200 && this.props.u_updateInfo(res.result)
+			if(res.code === 200){
+				this.getUserInfo()
+				localStorage.setItem("music_billson_token",res.result.token)
+				this.props.u_updateInfo(res.result)
+				window.location.hash = "/"
+			}
 			Toast.info(res.msg, 0.8)
 		}).catch(err => {
 			Toast.info('登录出错!', 1)
@@ -73,8 +69,16 @@ class MusicLogin extends PureComponent{
 	Register(){
 		window.location.hash = '/register'
 	}
+	getUserInfo(){
+		http.post(API.getUserList()).then(res => {
+			res.code === 200 && this.props.p_initsonglist(res.result.col_list)
+			Toast.info(res.msg, 0.8)
+		}).catch(err => {
+			Toast.info('获取收藏列表失败!', .8)
+		})
+	}
 	back(){
-		window.history.go(-1)
+		window.location.hash = '/'
 	}
 	render() {
 		return(

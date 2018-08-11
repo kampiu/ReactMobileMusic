@@ -65,9 +65,8 @@ class MusicRanking extends PureComponent {
 								</div>
 								)
 							}else{
-								return 
-							}
-								
+								return null
+							}	
 						})
 					}
 					<div className="ranking-title">官方排行榜</div>
@@ -75,7 +74,9 @@ class MusicRanking extends PureComponent {
 						this.props.msg.ranking.rank.map((item,index) => {
 							if(index >= 5){
 								return <RankingItem data={item} key={item.id} w={"2.4rem"} index={index} id={item.id}></RankingItem>
-							}
+							}else{
+								return null
+							}	
 						})
 					}
 					

@@ -6,6 +6,8 @@ import { Toast } from 'antd-mobile'
 import { connect } from 'react-redux'
 import { addSong, initSong } from './../../../redux/reducers/MusicPlayer'
 import API from '../../../comment/Api'
+import playIcon from '../album-list-play.png'
+import collectIcon from '../album-list-coll.png'
 
 @connect(
 	state => ({
@@ -75,8 +77,8 @@ class listBodyItem extends PureComponent {
 					<div className="album-list-singer font-break">{this.props.data.artists ? this.props.data.artists[0].name : (this.props.data.singer ? this.props.data.singer : this.props.data.ar[0].name)}</div>
 				</div>
 				<div className="album-list-console">
-					<img onClick={ this.play } alt="" src="./img/album-list-play.png" />
-					<img onClick={ this.addSong } alt="" src="./img/album-list-coll.png" />
+					<img onClick={ this.play } alt="" src={playIcon} />
+					<img onClick={ this.addSong } alt="" src={collectIcon} />
 				</div>
 			</div>
 		)
