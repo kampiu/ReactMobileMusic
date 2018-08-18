@@ -18,6 +18,10 @@ class rankingItem extends PureComponent {
 	componentWillUnmount() {
 		
 	}
+	imgLoad(event){
+		this.props.data.isLoding = false
+		event.target.className = "load-img img-loadEnd"
+	}
 	toPages(){
 		window.location.hash = "/rankitem/" + this.props.index + "/" + this.props.id
 	}
@@ -25,7 +29,7 @@ class rankingItem extends PureComponent {
 		return(
 			<div className="box-grid-item" style={{width:this.props.w}} onClick={ this.toPages }>
 				<div className="box-grid-item-img" style={{height:this.props.w}}>
-					<img className="load-img" alt="" src={this.props.data.coverImgUrl + '?param=140y140'} onLoad={this.imgLoad} />
+					<img className={ !this.props.data.isLoaing ? "load-img img-loadEnd" : "load-img" } alt="" src={this.props.data.coverImgUrl + '?param=140y140'} onLoad={ this.imgLoad } />
 					<img alt="" className="img-default" src="./img/default.jpg" />
 				</div>
 				<div className="box-grid-item-content font-break">
@@ -42,9 +46,6 @@ class rankingItem extends PureComponent {
 		} else {
 			return(v / 10000).toFixed(0) + '万'
 		}
-	}
-	imgLoad(event){
-		event.target.className = "load-img img-loadEnd"
 	}
 }
 

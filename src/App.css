@@ -5,7 +5,7 @@
 	background:#FBFCFD;
 	padding-bottom:50px;
 	z-index: 2000;
-	/*position:absolute;					/*图片裁剪暂时使用*/*/
+	/*position:absolute;					/*图片裁剪暂时使用*/
 	overflow: hidden;				/*图片裁剪暂时屏蔽*/
 }
 .App-tabbar{
@@ -20,14 +20,55 @@
 	min-height: 100%;
 }
 /*路由过度*/
-.fade-enter {
-  opacity: 0;
-  z-index: 1;
+.left-enter {
+    position: absolute;
+    top: 0;
+    background: #fff;
+    z-index: 100;
+    opacity: 1;
+    transform: translateX(100%);
 }
 
-.fade-enter.fade-enter-active {
-  opacity: 1;
-  transition: opacity 600ms ease-in;
+.left-enter.left-enter-active {
+    opacity: 1;
+    transform: translateX(0);
+    transition: all 0.12s linear;
 }
 
+.left-leave {
+    opacity: 1;
+    transform: translateX(0);
+}
+
+.left-leave.left-leave-active {
+    opacity: 1;
+    transform: translateX(100%);
+    transition: all 0.12s linear;
+}
+.left-exit{
+    position: absolute;
+    top: 0;
+    background: #fff;
+    opacity: 1;
+    transform: translateX(0);
+    z-index: 5000;
+}
+.left-exit, .left-exit-active{
+    opacity: 1;
+    transform: translateX(100%);
+    transition: all 0.12s linear;
+    animation-name: noneShow;
+    animation-delay: .1s;
+    animation-duration: .12s;
+    animation-fill-mode: forwards;
+    animation-timing-function: linear;
+}
+@keyframes noneShow{
+	from{
+		display:block
+	}
+	to{
+		display:none
+	}
+}
 

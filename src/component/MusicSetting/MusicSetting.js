@@ -143,7 +143,6 @@ class MusicSetting extends PureComponent {
 		let reader = new FileReader()
 		let file = document.getElementById("userFileIcon").files[0]
 		reader.onload = e => {
-			console.log(e.target)
 			this.setState({
 				settingImg: true,
 				data: e.target.result,

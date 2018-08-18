@@ -48,6 +48,10 @@ class listBodyItem extends PureComponent {
 		})
 	}
 	addSong() {
+		if(this.props.msg.user.token === ""){
+			Toast.info( "请登录后尝试!", 0.8)
+			return
+		}
 		let songs = this.props.data
 		let song = {
 			id: songs.id,

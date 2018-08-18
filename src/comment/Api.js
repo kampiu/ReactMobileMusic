@@ -3,7 +3,7 @@ const _baseUrl = 'http://localhost:3002/api'
 //const _baseUrl = 'http://192.168.0.159:3002/api'
 
 
-export default {
+const API = {
 	userPlayList(id){
 		return _baseUrl + '/user/playlist?uid=' + id 
 	},
@@ -97,3 +97,5 @@ export default {
 	}
 	
 }
+
+export default API

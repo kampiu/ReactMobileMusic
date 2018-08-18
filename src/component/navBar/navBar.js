@@ -13,6 +13,7 @@ class navBar extends PureComponent {
 		this.onScroll = this.onScroll.bind(this)
 		this.scrollToTop = this.scrollToTop.bind(this)
 		this.toPages = this.toPages.bind(this)
+		this.toBack = this.toBack.bind(this)
 	}
 	componentWillMount() {
 		
@@ -35,10 +36,13 @@ class navBar extends PureComponent {
 	toPages(){
 		window.location.hash = "/player"
 	}
+	toBack(){
+		window.history.go(-1)
+	}
 	render() {
 		return(
 			<div className="navbar-view" style={ this.state.scroll > 280 ? {backgroundColor:"#5179F1"} : {backgroundColor:"rgba(0,0,0,0)"}}>
-				<div className="navbar-nav" onClick={ () => { window.history.go(-1) }}></div>
+				<div className="navbar-nav" onClick={ this.toBack }></div>
 				<span onClick={ this.scrollToTop }>{ this.state.title }</span>
 				<div className="navbar-nav" onClick={ this.toPages }></div>
 			</div>

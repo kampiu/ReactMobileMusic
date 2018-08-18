@@ -103,19 +103,19 @@ class MusicRegister extends PureComponent{
 	            <img className="login-logo" src={ loginlogo } alt="" />
 	            <div className="login-item">
 	                <i className="user-icon"></i>
-	                <input placeholder="Acount" autoComplete="off" type="text" maxLength="16" name="acount" onChange={ this.check } />
+	                <input autoComplete="off" placeholder="Acount" autoComplete="off" type="text" maxLength="16" name="acount" onChange={ this.check } />
 	            </div>
 	            <div className="login-item">
 	                <i className="pwd-icon"></i>
-	                <input placeholder="Password" autoComplete="off" type="password" maxLength="16" name="pwd" onChange={ this.check } />
+	                <input autoComplete="off" placeholder="Password" autoComplete="off" type="password" maxLength="16" name="pwd" onChange={ this.check } />
 	            </div>
 	            <div className="login-item">
 	                <i className="phone-icon"></i>
-	                <input placeholder="Phone" autoComplete="off" type="number" maxLength="16" name="phone" onChange={ this.check } />
+	                <input autoComplete="off" placeholder="Phone" autoComplete="off" type="number" maxLength="16" name="phone" onChange={ this.check } />
 	            </div>
 	            <div className="sms-item">
 	                <i className="sms-icon"></i>
-	                <input placeholder="Code" autoComplete="off" type="number" maxLength="6" name="sms" onChange={ this.check } />
+	                <input autoComplete="off" placeholder="Code" autoComplete="off" type="number" maxLength="6" name="sms" onChange={ this.check } />
 	                <div className="sms-btn"  style={{color:this.state.canSend ? '#0387ff' : 'rgb(208, 208, 208)'}} onClick={ this.send }>Send</div>
 	            </div>
 	            <div className="login-btn" style={{color:this.state.canPost ? '#0387ff' : 'rgb(208, 208, 208)'}} onClick={ this.register }>注册</div>

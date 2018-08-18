@@ -31,7 +31,7 @@ class titleBar extends PureComponent {
 	}
 	render() {
 		return(
-			<div className="titlebar-view">
+			<div className="titlebar-view" style={{backgroundColor: this.props.isCollection ? 'rgba(0,0,0,0)' : '#5179F1'}}>
 				{
 					this.props.back ? <div className="titlebar-nav-back" onClick={ this.back }></div> : null
 				}

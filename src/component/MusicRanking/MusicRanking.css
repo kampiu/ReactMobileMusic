@@ -3,6 +3,9 @@
 	height:auto;
 	overflow: hidden;
 	padding-top:46px;
+	background:#FFF;
+	position:relative;
+	z-index: 1000;
 }
 .ranking-title{
 	width:100%;

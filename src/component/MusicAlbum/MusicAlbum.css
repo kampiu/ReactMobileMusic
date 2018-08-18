@@ -140,6 +140,11 @@
 	justify-content: space-between;
 	background:lightskyblue;
 }
+.am-pull-to-refresh-indicator{
+	display:flex;
+	align-items: center;
+	justify-content: center;
+}
 
 
 

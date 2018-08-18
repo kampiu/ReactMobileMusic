@@ -23,7 +23,7 @@ class listHeader extends PureComponent {
 		return(
 			<div className="album-view-head">
 				{
-					this.props.isCollection ? <TitleBar title={this.props.msg.user.nickName + "的歌单"}></TitleBar> : <NavBar title={"歌单"}></NavBar>
+					this.props.isCollection ? <TitleBar title={this.props.msg.user.nickName + "的歌单"} isCollection={this.props.isCollection}></TitleBar> : <NavBar title={"歌单"}></NavBar>
 				}
 				<div className="album-view-content">
 					<div className="album-view-img">

@@ -81,6 +81,7 @@ class MusicLogin extends PureComponent{
 		window.location.hash = '/'
 	}
 	render() {
+		console.log("!!!!!")
 		return(
 			<div className="login-view" id="login-view">
 				<div className="view-back" onClick={ this.back }></div>
@@ -88,11 +89,11 @@ class MusicLogin extends PureComponent{
 	            <img className="login-logo" src={loginlogo} alt="" />
 	            <div className="login-item">
 	                <i className="user-icon"></i>
-	                <input placeholder="Acount" maxLength="16" type="text" name="acount" onChange={ this.check } />
+	                <input autoComplete="off" placeholder="Acount" maxLength="16" type="text" name="acount" onChange={ this.check } />
 	            </div>
 	            <div className="login-item">
 	                <i className="pwd-icon"></i>
-	                <input placeholder="Password" maxLength="16" type="password" name="pwd" onChange={ this.check } />
+	                <input autoComplete="off" placeholder="Password" maxLength="16" type="password" name="pwd" onChange={ this.check } />
 	            </div>
 	            <div className="login-btn" style={{color:this.state.canPost ? '#0387ff' : 'rgb(208, 208, 208)'}} onClick={ this.logining } >登录</div>
 			</div>

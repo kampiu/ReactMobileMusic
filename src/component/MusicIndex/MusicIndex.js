@@ -34,6 +34,7 @@ class MusicIndex extends PureComponent {
 	}
 	initData() {
 		http.get(API.getHome()).then(res => {
+			console.log(res)
 			if(res.code === 200) {
 				this.props.initTab(res.data.banner)
 				this.props.initMusic(res.data.playlist)

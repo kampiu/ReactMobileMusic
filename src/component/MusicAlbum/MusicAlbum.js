@@ -6,7 +6,7 @@ import { connect } from 'react-redux'
 import { changeType, changeMode, changeOffset, albumLoading, insertSongs } from './../../redux/reducers/MusicAlbumList'
 import './MusicAlbum.css'
 import BoxGridItem from './../boxGridItem/boxGridItem'
-import { PullToRefresh, Toast } from 'antd-mobile'
+import { PullToRefresh, Toast, ActivityIndicator } from 'antd-mobile'
 import AlbumMenu from './albumMenu/albumMenu'
 import NavBar from './../navBar/navBar'
 import API from '../../comment/Api'
@@ -96,7 +96,7 @@ class boxGrid extends PureComponent {
 			<div className="albumlist-view">
 				<PullToRefresh damping={ 200 } ref={el => this.ptr = el} distanceToRefresh={38}
 	        		style={{ height: this.state.height, overflow: 'auto', }}
-	        		indicator={{ activate: '放开我加载...',deactivate: '上拉加载',release: '正努力加载...',finish: '加载完成' }}
+	        		indicator={{ activate: '放开我加载...',deactivate: '上拉加载',release: <ActivityIndicator text="Loading..." />,finish: '加载完成' }}
 			        direction={'up'}
 			        refreshing={ this.state.refreshing }
 			        onRefresh={ this.onScroll }>
